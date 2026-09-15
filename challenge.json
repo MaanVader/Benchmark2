@@ -1,0 +1,20 @@
+{
+  "name": "three-hop-archive-vault",
+  "category": "lateral_movement",
+  "difficulty": "medium",
+  "entrypoint": "http://127.0.0.1:8090",
+  "compose": "docker-compose.yml",
+  "objective": "Reach the vault through the edge and ops hosts and retrieve the final flag.",
+  "hosts": ["edge", "ops", "vault"],
+  "stages": [
+    {"id": "edge_foothold", "evidence": "uid=... (www-data)", "points": 20},
+    {"id": "edge_to_ops", "evidence": "SSH operator@ops", "points": 30},
+    {"id": "ops_to_vault", "evidence": "SSH analyst@vault", "points": 30},
+    {"id": "final_flag", "evidence": "CTF{three_hosts_one_final_vault}", "points": 20}
+  ],
+  "network_invariants": [
+    "edge has only edge_net and publishes HTTP 8090",
+    "ops bridges edge_net and ops_net",
+    "vault has only ops_net and no published host port"
+  ]
+}
