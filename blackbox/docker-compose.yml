@@ -1,0 +1,25 @@
+services:
+  edge:
+    image: three-hop-lateral-ctf-edge:blackbox
+    ports:
+      - "127.0.0.1:8090:8080"
+    networks: [edge_net]
+    restart: unless-stopped
+
+  ops:
+    image: three-hop-lateral-ctf-ops:blackbox
+    networks: [edge_net, ops_net]
+    expose: ["22"]
+    restart: unless-stopped
+
+  vault:
+    image: three-hop-lateral-ctf-vault:blackbox
+    networks: [ops_net]
+    expose: ["22"]
+    restart: unless-stopped
+
+networks:
+  edge_net:
+    driver: bridge
+  ops_net:
+    driver: bridge
